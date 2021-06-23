@@ -1,3 +1,4 @@
+"use strict"
 class Board extends Grid{
   
     constructor(bWidth, bHeight, cWidth=-1, cHeight=-1) {
@@ -8,15 +9,28 @@ class Board extends Grid{
         for(let y = 0; y < bHeight; y++) {
 
             let temp = [];
-            for(let x = 0; x < bWidth; x++) temp.push( new Cell(x,y) );
-
+            for(let x = 0; x < bWidth; x++) {
+                temp.push( {
+                    x: x, y: y,
+                    state: 0, neighbours: 0,
+                    calculateState: () => {
+                        if(this.state) {
+                            if( this.neighbours < 2 || 
+                                this.neighbours > 3 ) this.state = 0;
+                        } else if(this.neighbours === 3) this.state = 1;
+                    } 
+                } );
+            }
             this.cells.push(temp);
         }
     }
     // Toggle STATE of the CELL at given position (p5.Vector)
     toggleCellState(xIndex, yIndex) {
-        let temp = this.cells[yIndex][xIndex].state
-        this.cells[yIndex][xIndex].state = (temp + 1) % 2; // swap state of cell
+        if(xIndex >= 0 && xIndex < this.bWidth && 
+           yIndex >= 0 && yIndex < this.bHeight) {
+            let {state} = this.cells[yIndex][xIndex]
+            this.cells[yIndex][xIndex].state = (state + 1) % 2; // swap state of cell
+        }
     }
     // Set STATE of the CELL at given index to value
     setCellState(xIndex, yIndex, val) {
@@ -58,19 +72,25 @@ class Board extends Grid{
         // Calculate how many NEIGHBOURS CELL has
         cells1D.map( cell => this.calcNeighbours(cell.x, cell.y) );
         // Update STATE based on the NEIGHBOURS
-        cells1D.map( cell => cell.calcState() );
+        cells1D.map( cell => cell.calculateState() );
     }
     // Render CELL STATEs (Dead/Alive)
-    renderCells(color=[220,220,255]) {
-        this.cells.map( i => i.map( cell => (
-            cell.render( this.cWidth, this.cHeight, color )
-        )));
+    renderCells(color=[220]) {
+        this.cells.map( i => i.map( cell => {
+            if(cell.state) {
+                fill(color);
+                //noStroke();
+                
+                let offset = 0;
+                rect(cell.x * this.cWidth + offset, cell.y * this.cHeight + offset, 
+                    this.cWidth - 2*offset, this.cHeight - 2*offset);
+            }
+        }));
     }
     // Render game
     render() {
-
-        this.renderGrid([0,0], 1, false, [0,0]);
-        this.renderCells([222, 109, 216]);
+        this.renderGrid();
+        this.renderCells();
     }
 
 }

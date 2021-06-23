@@ -22,7 +22,7 @@ class Grid {
     // lWeight : grid line weight (integer)
     // bg : render background? (true | false)
     // bgColor : color of background (integer | array[int] : [1-4])
-    renderGrid(lColor=235, lWeight=1, bg=false, bgColor=255) {
+    renderGrid(lColor=0, lWeight=1, bg=false, bgColor=255) {
 
         stroke(lColor); strokeWeight(lWeight);
         let w = this.cWidth  * this.bWidth;
