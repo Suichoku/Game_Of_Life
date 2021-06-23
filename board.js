@@ -1,4 +1,3 @@
-"use strict"
 class Board extends Grid{
   
     constructor(bWidth, bHeight, cWidth=-1, cHeight=-1) {
@@ -13,7 +12,7 @@ class Board extends Grid{
                 temp.push( {
                     x: x, y: y,
                     state: 0, neighbours: 0,
-                    calculateState: () => {
+                    calculateState() {
                         if(this.state) {
                             if( this.neighbours < 2 || 
                                 this.neighbours > 3 ) this.state = 0;
@@ -79,9 +78,9 @@ class Board extends Grid{
         this.cells.map( i => i.map( cell => {
             if(cell.state) {
                 fill(color);
-                //noStroke();
+                noStroke();
                 
-                let offset = 0;
+                let offset = 1;
                 rect(cell.x * this.cWidth + offset, cell.y * this.cHeight + offset, 
                     this.cWidth - 2*offset, this.cHeight - 2*offset);
             }

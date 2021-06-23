@@ -12,10 +12,10 @@
 // https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life
 
 let board;               // gameboard
-let cWidth = 30;         // CELL width in pixels
+let cWidth = 15;         // CELL width in pixels
 let cHeight = cWidth;    // CELL height in pixels
-let cols = 30;           // gameboard columns amount
-let rows = 30;           // gameboard rows amount
+let cols = 100;           // gameboard columns amount
+let rows = 60;           // gameboard rows amount
 let paused = true;
 let randomOn = false;
 
@@ -33,19 +33,13 @@ function setup() {
     createCanvas(cWidth*cols, cHeight*rows);
     frameRate(8);
     board = new Board(cols, rows, cWidth, cHeight);
-    
+    /*
     // GLIDER
     board.setCellState(2, 3, 1); // set the STATE of a CELL to value
     board.setCellState(3, 4, 1);
     board.setCellState(4, 2, 1);
     board.setCellState(4, 3, 1);
     board.setCellState(4, 4, 1);
-    
-    /*
-    // Blinker
-    board.setCellState(6, 2, 1);
-    board.setCellState(6, 3, 1);
-    board.setCellState(6, 4, 1);
     */
 }
 
@@ -54,10 +48,9 @@ function draw() {
     //board.render(); // render gameboard
     if(!paused) {
         board.updateCells();
-        board2.updateCells();
     }
     if(randomOn) {
-        addRandom(5);
+        addRandom(20);
     }
 
     board.render(); // render gameboard
